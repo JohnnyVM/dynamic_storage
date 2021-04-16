@@ -1,5 +1,5 @@
 # dynamic_storage
-Small implementation of C dynamic storage, (in the future) fully tested and symple
+Small implementation of C dynamic storage, (in the future) fully tested and simple
 ## Reasons
 Becouse i don't want invent the wheel (again)
 ## dependencies
