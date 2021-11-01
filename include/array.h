@@ -1,5 +1,9 @@
 #include <stdlib.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct array {
 	void *storage;
 	unsigned int length;
@@ -22,3 +26,7 @@ struct array* array_make(struct array*, const unsigned int);
 void* array_pop(struct array*, void*);
 
 void free_array(struct array *arr);
+
+#ifdef __cplusplus
+}
+#endif
