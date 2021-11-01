@@ -48,4 +48,5 @@ clean:
 
 install:
 	cp lib/* ${PREFIX}/lib
-	cp -r . ${PREFIX}/include/
+	mkdir -p ${PREFIX}/include/lib${PROJECT_NAME}/
+	cp include/* ${PREFIX}/include/lib${PROJECT_NAME}/
