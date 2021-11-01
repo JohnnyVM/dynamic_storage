@@ -4,7 +4,7 @@ struct array {
 	void *storage;
 	unsigned int length;
 	unsigned int capacity;
-	size_t element_size;
+	const size_t element_size;
 };
 
 struct array_array *array_append(struct array *, const void *);
