@@ -1,8 +1,25 @@
 #include <string.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "dynamic_array.h"
+
+
+/* \brief Define the fields for a struct array 
+ * I am going to keep the flat struct without pointer for do morre robust interface
+ * */
+struct array _create_array(size_t element_size, void(*free_ptr)(void*)) {
+	struct array output = {
+		.storage = NULL,
+		.length = 0,
+		.capacity = 0,
+		.element_size=element_size,
+		.free = free_ptr
+	};
+
+	return output;
+}
 
 /**
  * \brief append element to struct array_array
@@ -66,4 +83,14 @@ void* array_pop(struct array* arr, void* elem) {
 	if(!elem) { return NULL; }
 	memcpy(elem, (char *)arr->storage + (arr->length * arr->element_size), arr->element_size);
 	return elem;
+}
+
+/* clean the content of the array, but not free the array */
+void clean_array(struct array* arr) {
+	if(!arr || !arr->free) { return NULL; }
+
+	// todo add overflow check
+	for(intmax_t i = arr->length-1; i >= 0; i--) {
+		arr->free((char *)arr->storage + (i * arr->element_size));
+	}
 }

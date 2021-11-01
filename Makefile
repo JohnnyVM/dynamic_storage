@@ -1,8 +1,14 @@
+.SUFFIXES:
+.SUFFIXES: .c .o .d .h .cpp .hpp
+
+PROJECT_NAME := array
+
+COMMON_FLAGS := -fexceptions
 debug ?= false
 ifeq (${debug}, true)
-	COMMON_FLAGS := -g3 -ggdb -ftrapv -fsanitize=address -fsanitize=leak -fsanitize=undefined
+	COMMON_FLAGS += -g3
 else
-	COMMON_FLAGS := -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
+	COMMON_FLAGS += -O2 -D_FORTIFY_SOURCE=2 -DNDEBUG
 endif
 
 profile ?= false
@@ -20,7 +26,9 @@ WARNING_FLAGS := -Wextra -Wall -Wshadow -Wdouble-promotion -Wpadded \
 CFLAGS += ${WARNING_FLAGS} ${INCLUDE_FLAGS} ${COMMON_FLAGS}
 export
 
-.PHONY: clean tests coverage library
+.PHONY: clean tests coverage library install
+library: ${OBJECTS}
+	ar -rc lib/lib${PROJECT_NAME}.a $^
 
 ${OBJECTS}: %.o: %.c
 	${CC} -Werror ${CFLAGS} -MMD -c $< -o $@
@@ -28,9 +36,6 @@ ${OBJECTS}: %.o: %.c
 tests: ${OBJECTS}
 	${MAKE} -C tests tests
 	./tests/tests
-
-library: ${OBJECTS} | lib
-	ar -rc lib/libdictionary.a $^
 
 lib:
 	mkdir lib
@@ -40,3 +45,7 @@ lib:
 clean:
 	rm -rf ${OBJECTS} ${DEPENDENCIES} lib
 	-$(MAKE) -C tests clean
+
+install:
+	cp lib/* ${PREFIX}/lib
+	cp -r . ${PREFIX}/include/
