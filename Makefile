@@ -27,7 +27,7 @@ CFLAGS += ${WARNING_FLAGS} ${INCLUDE_FLAGS} ${COMMON_FLAGS}
 export
 
 .PHONY: clean tests coverage library install
-library: ${OBJECTS}
+library: ${OBJECTS} | lib
 	ar -rc lib/lib${PROJECT_NAME}.a $^
 
 ${OBJECTS}: %.o: %.c

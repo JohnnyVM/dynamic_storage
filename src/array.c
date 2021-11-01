@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "dynamic_array.h"
+#include "array.h"
 
 
 /* \brief Define the fields for a struct array 
@@ -87,10 +87,10 @@ void* array_pop(struct array* arr, void* elem) {
 
 /* clean the content of the array, but not free the array */
 void clean_array(struct array* arr) {
-	if(!arr || !arr->free) { return NULL; }
+	if(!arr || !arr->free) { return; }
 
 	// todo add overflow check
 	for(intmax_t i = arr->length-1; i >= 0; i--) {
-		arr->free((char *)arr->storage + (i * arr->element_size));
+		arr->free((char *)arr->storage + ((uintmax_t)i * arr->element_size));
 	}
 }
