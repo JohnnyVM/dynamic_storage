@@ -1,3 +1,6 @@
+#ifndef LIBARRAY_ARRAY_H
+#define LIBARRAY_ARRAY_H
+
 #include <stdlib.h>
 
 #ifdef __cplusplus
@@ -29,4 +32,6 @@ void free_array(struct array *arr);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
