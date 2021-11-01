@@ -1,4 +1,4 @@
-# dynamic_storage
+# array
 Small implementation of C dynamic storage, simple and (in the future) fully tested.
 ## Reasons
 Becouse i don't want invent the wheel (again)
@@ -9,3 +9,4 @@ No dependencies this is C but require [CPPUTest](https://cpputest.github.io/) if
 
 ### TO DO
 - the tests
+- memory handler for deallocate elements

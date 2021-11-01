@@ -5,11 +5,10 @@
 
 #include "array.h"
 
-
-/* \brief Define the fields for a struct array 
+/* \brief Define the fields for a struct array
  * I am going to keep the flat struct without pointer for do morre robust interface
  * */
-struct array _create_array(size_t element_size, void(*free_ptr)(void*)) {
+struct array _init_array(size_t element_size, void(*free_ptr)(void*)) {
 	struct array output = {
 		.storage = NULL,
 		.length = 0,
@@ -19,6 +18,13 @@ struct array _create_array(size_t element_size, void(*free_ptr)(void*)) {
 	};
 
 	return output;
+}
+
+struct array* _create_array(size_t element_size, void(*free_ptr)(void*)) {
+
+	struct array* arr = malloc(sizeof *arr);
+	*arr = _init_array(element_size, free_ptr);
+	return arr;
 }
 
 /**
@@ -86,11 +92,13 @@ void* array_pop(struct array* arr, void* elem) {
 }
 
 /* clean the content of the array, but not free the array */
-void clean_array(struct array* arr) {
-	if(!arr || !arr->free) { return; }
+void free_array(struct array* arr) {
+	if(!arr) { return; }
 
 	// todo add overflow check
-	for(intmax_t i = arr->length-1; i >= 0; i--) {
+	for(intmax_t i = arr->length-1; arr->free && i >= 0; i--) {
 		arr->free((char *)arr->storage + ((uintmax_t)i * arr->element_size));
 	}
+
+	free(arr);
 }
